@@ -1,4 +1,4 @@
-package com.tjrwns8024.ttt_android.ui
+package com.tjrwns8024.ttt_android.ui.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,4 +1,4 @@
-package com.tjrwns8024.ttt_android.ui
+package com.tjrwns8024.ttt_android.ui.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.tjrwns8024.ttt_android.R
 
 class RankFragment : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

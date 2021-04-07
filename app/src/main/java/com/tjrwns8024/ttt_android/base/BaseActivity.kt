@@ -15,18 +15,21 @@ abstract class BaseActivity<T : ViewDataBinding, E : BaseViewModel>(
     private val viewModelClass: Class<E>
 ) : AppCompatActivity() {
 
-    lateinit var binding: T
-    lateinit var viewModel: E
+    private var _binding: T? = null
+    protected val binding get() = _binding!!
+
+    private var _viewModel: E? = null
+    protected val viewModel get() = _viewModel!!
 
     abstract val viewModelStoreOwner: ViewModelStoreOwner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, layoutId)
-        viewModel = ViewModelProvider(viewModelStoreOwner).get(viewModelClass)
+        _binding = DataBindingUtil.setContentView(this, layoutId)
+        _viewModel = ViewModelProvider(viewModelStoreOwner).get(viewModelClass)
 
-        binding.setVariable(BR.vm, viewModel)
-        binding.lifecycleOwner = this
+        _binding?.setVariable(BR.vm, viewModel)
+        _binding?.lifecycleOwner = this
 
         observeEvent()
 
@@ -40,4 +43,9 @@ abstract class BaseActivity<T : ViewDataBinding, E : BaseViewModel>(
     }
 
     abstract fun observeEvent()
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

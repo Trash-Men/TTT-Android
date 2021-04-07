@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="main"
-            type="com.tjrwns8024.ttt_android.ui.MainActivity" />
+            name="vm"
+            type="com.tjrwns8024.ttt_android.viewmodel.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,7 +29,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
-            android:onClick="clickRankActivity"
             android:src="@drawable/ic_rank"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="@+id/mainFab"
@@ -43,7 +42,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
-            android:onClick="clickChartActivity"
             android:src="@drawable/ic_chart"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="@+id/mainFab"
@@ -79,7 +77,7 @@
             android:layout_margin="16dp"
             android:backgroundTint="@color/mainColor"
             android:src="@drawable/ic_add"
-            android:onClick="toggleFab"
+            android:onClick="@{()->vm.toggleFab()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/white" />

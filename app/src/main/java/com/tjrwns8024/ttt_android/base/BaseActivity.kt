@@ -10,18 +10,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.tjrwns8024.ttt_android.BR
 
-abstract class BaseActivity<T : ViewDataBinding, E : BaseViewModel> : AppCompatActivity() {
+abstract class BaseActivity<T : ViewDataBinding, E : BaseViewModel>(
+    private val layoutId: Int,
+    private val viewModelClass: Class<E>
+) : AppCompatActivity() {
 
     lateinit var binding: T
     lateinit var viewModel: E
-    abstract val layoutId: Int
+
     abstract val viewModelStoreOwner: ViewModelStoreOwner
-    abstract val modelClass: Class<E>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, layoutId)
-        viewModel = ViewModelProvider(viewModelStoreOwner).get(modelClass)
+        viewModel = ViewModelProvider(viewModelStoreOwner).get(viewModelClass)
 
         binding.setVariable(BR.vm, viewModel)
         binding.lifecycleOwner = this

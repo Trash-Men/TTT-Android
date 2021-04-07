@@ -6,32 +6,46 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
-import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.tjrwns8024.ttt_android.R
 import com.tjrwns8024.ttt_android.base.BaseActivity
 import com.tjrwns8024.ttt_android.databinding.ActivityMainBinding
 import com.tjrwns8024.ttt_android.util.ViewAnimation
-import net.daum.mf.map.api.MapPOIItem
-import net.daum.mf.map.api.MapPoint
-import net.daum.mf.map.api.MapView
-import splitties.activities.start
+import com.tjrwns8024.ttt_android.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import net.daum.mf.map.api.*
 
-
-class MainActivity : BaseActivity<ActivityMainBinding>() {
-
-    override val layoutId: Int
-        get() = R.layout.activity_main
-
-    private var isFabOpen = false
-    private var isRotate = false
+@AndroidEntryPoint
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(
+    R.layout.activity_main,
+    MainViewModel::class.java
+) {
+    override val viewModelStoreOwner = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.main = this
+        drawMap()
+    }
 
+    override fun observeEvent() {
+        viewModel.isFabOpen.observe(this, {
+
+            if (viewModel.isFabOpen.value!!) {
+                ObjectAnimator.ofFloat(binding.pictureFab, "translationY", 0f).apply { start() }
+                ObjectAnimator.ofFloat(binding.chartFab, "translationY", 0f).apply { start() }
+                ObjectAnimator.ofFloat(binding.rankFab, "translationY", 0f).apply { start() }
+            } else {
+                ObjectAnimator.ofFloat(binding.pictureFab, "translationY", -250f).apply { start() }
+                ObjectAnimator.ofFloat(binding.chartFab, "translationY", -500f).apply { start() }
+                ObjectAnimator.ofFloat(binding.rankFab, "translationY", -750f).apply { start() }
+            }
+            viewModel.isRotate = ViewAnimation.rotateFab(binding.mainFab, !viewModel.isRotate)
+        })
+    }
+
+    private fun drawMap() {
         try {
             if (ContextCompat.checkSelfPermission(
                     applicationContext,
@@ -75,31 +89,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         marker.selectedMarkerType =
             MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
-
         mapView.addPOIItem(marker)
     }
-
-    fun clickRankActivity(view: View) {
-        start<RankActivity>()
-    }
-
-    fun clickChartActivity(view: View) {
-        start<ChartActivity>()
-    }
-
-    fun toggleFab(view: View) {
-        isRotate = ViewAnimation.rotateFab(binding.mainFab, !isRotate)
-        if (isFabOpen) {
-            ObjectAnimator.ofFloat(binding.pictureFab, "translationY", 0f).apply { start() }
-            ObjectAnimator.ofFloat(binding.chartFab, "translationY", 0f).apply { start() }
-            ObjectAnimator.ofFloat(binding.rankFab, "translationY", 0f).apply { start() }
-        } else {
-            ObjectAnimator.ofFloat(binding.pictureFab, "translationY", -250f).apply { start() }
-            ObjectAnimator.ofFloat(binding.chartFab, "translationY", -500f).apply { start() }
-            ObjectAnimator.ofFloat(binding.rankFab, "translationY", -750f).apply { start() }
-        }
-
-        isFabOpen = !isFabOpen
-    }
-
 }

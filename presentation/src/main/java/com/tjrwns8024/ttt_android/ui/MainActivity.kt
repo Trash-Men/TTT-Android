@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -31,6 +32,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
         ViewModelProvider(this, factory).get(MainViewModel::class.java)
     }
 
+    lateinit var mapView: MapView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,22 +41,34 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
     }
 
     override fun observeEvent() {
-        viewModel.isFabOpen.observe(this, {
+        with(viewModel) {
+            isFabOpen.observe(this@MainActivity, {
+                if (isFabOpen.value!!) {
+                    ObjectAnimator.ofFloat(binding.pictureFab, "translationY", 0f).apply { start() }
+                    ObjectAnimator.ofFloat(binding.chartFab, "translationY", 0f).apply { start() }
+                    ObjectAnimator.ofFloat(binding.rankFab, "translationY", 0f).apply { start() }
+                } else {
+                    ObjectAnimator.ofFloat(binding.pictureFab, "translationY", -250f)
+                        .apply { start() }
+                    ObjectAnimator.ofFloat(binding.chartFab, "translationY", -500f)
+                        .apply { start() }
+                    ObjectAnimator.ofFloat(binding.rankFab, "translationY", -750f).apply { start() }
+                }
+                isRotate = ViewAnimation.rotateFab(binding.mainFab, !isRotate)
+            })
 
-            if (viewModel.isFabOpen.value!!) {
-                ObjectAnimator.ofFloat(binding.pictureFab, "translationY", 0f).apply { start() }
-                ObjectAnimator.ofFloat(binding.chartFab, "translationY", 0f).apply { start() }
-                ObjectAnimator.ofFloat(binding.rankFab, "translationY", 0f).apply { start() }
-            } else {
-                ObjectAnimator.ofFloat(binding.pictureFab, "translationY", -250f).apply { start() }
-                ObjectAnimator.ofFloat(binding.chartFab, "translationY", -500f).apply { start() }
-                ObjectAnimator.ofFloat(binding.rankFab, "translationY", -750f).apply { start() }
-            }
-            viewModel.isRotate = ViewAnimation.rotateFab(binding.mainFab, !viewModel.isRotate)
-        })
+            trashList.observe(this@MainActivity, {
+                addMarker(1)
+            })
+
+            trashCanList.observe(this@MainActivity, {
+                addMarker(2)
+            })
+        }
     }
 
     private fun drawMap() {
+        //check permission
         try {
             if (ContextCompat.checkSelfPermission(
                     applicationContext,
@@ -74,7 +89,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
         val location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
 
         //mapView
-        val mapView = MapView(this)
+        mapView = MapView(this)
         val mapViewContainer = binding.mapView
         mapViewContainer.addView(mapView)
 
@@ -85,18 +100,48 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
             ), true
         )
 
-        val marker = MapPOIItem()
-        marker.itemName = "Default Marker"
-        marker.tag = 0
-        marker.mapPoint = MapPoint.mapPointWithGeoCoord(
-            location.latitude,
-            location.longitude
-        )
-        marker.markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
+    }
 
-        marker.selectedMarkerType =
-            MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+    private fun addMarker(num: Int) {
+        when (num) {
+            1 -> {
+                val list = viewModel.trashList.value!!
 
-        mapView.addPOIItem(marker)
+                for (data in list) {
+                    val trashMarker = MapPOIItem().apply {
+                        itemName = data.area + data.address
+                        mapPoint = MapPoint.mapPointWithGeoCoord(
+                            data.latitude.toDouble(),
+                            data.longitude.toDouble()
+                        )
+                        markerType = MapPOIItem.MarkerType.CustomImage
+                        customImageResourceId = R.drawable.ic_trash
+                        isCustomImageAutoscale = false
+                        setCustomImageAnchor(0.5f, 1.0f)
+                    }
+
+                    mapView.addPOIItem(trashMarker)
+                }
+            }
+            2 -> {
+                val list = viewModel.trashCanList.value!!
+
+                for (data in list) {
+                    val trashCanMarker = MapPOIItem().apply {
+                        itemName = data.area + data.address
+                        mapPoint = MapPoint.mapPointWithGeoCoord(
+                            data.latitude.toDouble(),
+                            data.longitude.toDouble()
+                        )
+                        markerType = MapPOIItem.MarkerType.CustomImage
+                        customImageResourceId = R.drawable.ic_trash_can
+                        isCustomImageAutoscale = false
+                        setCustomImageAnchor(0.5f, 1.0f)
+                    }
+
+                    mapView.addPOIItem(trashCanMarker)
+                }
+            }
+        }
     }
 }

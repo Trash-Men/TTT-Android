@@ -5,6 +5,7 @@ import com.tjrwns8024.data.datasource.TrashDataSourceImpl
 import com.tjrwns8024.data.remote.Api
 import com.tjrwns8024.domain.repository.TrashRepository
 import com.tjrwns8024.data.repository.TrashRepositoryImpl
+import com.tjrwns8024.domain.usecase.GetTrashCanUseCase
 import com.tjrwns8024.domain.usecase.GetTrashUseCase
 import com.tjrwns8024.ttt_android.viewmodel.MainViewModelFactory
 import dagger.Module
@@ -34,7 +35,14 @@ class TrashModule {
     ) = GetTrashUseCase(trashRepository, compositeDisposable)
 
     @Provides
+    fun provideGetTrashCanUseCase(
+        trashRepository: TrashRepository,
+        compositeDisposable: CompositeDisposable
+    ) = GetTrashCanUseCase(trashRepository, compositeDisposable)
+
+    @Provides
     fun provideMainViewModelFactory(
-        trashUseCase: GetTrashUseCase
-    ): MainViewModelFactory = MainViewModelFactory((trashUseCase))
+        trashUseCase: GetTrashUseCase,
+        trashCanUseCase: GetTrashCanUseCase
+    ): MainViewModelFactory = MainViewModelFactory(trashUseCase, trashCanUseCase)
 }

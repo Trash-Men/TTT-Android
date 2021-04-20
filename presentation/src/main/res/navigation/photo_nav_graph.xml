@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/photo_nav_graph"
+    app:startDestination="@id/choicePhotoFragment">
+
+    <fragment
+        android:id="@+id/choicePhotoFragment"
+        android:name="com.tjrwns8024.ttt_android.ui.fragment.ChoicePhotoFragment"
+        android:label="ChoicePhotoFragment" />
+
+</navigation>

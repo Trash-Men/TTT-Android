@@ -6,24 +6,22 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.tjrwns8024.ttt_android.R
 import com.tjrwns8024.ttt_android.base.BaseActivity
 import com.tjrwns8024.ttt_android.databinding.ActivityMainBinding
+import com.tjrwns8024.ttt_android.model.TrashModel
 import com.tjrwns8024.ttt_android.util.ViewAnimation
 import com.tjrwns8024.ttt_android.viewmodel.MainViewModel
-import com.tjrwns8024.ttt_android.viewmodel.MainViewModelFactory
+import com.tjrwns8024.ttt_android.viewmodel.factory.MainViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding>(
-    R.layout.activity_main
-) {
+class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     @Inject
     lateinit var factory: MainViewModelFactory
@@ -31,6 +29,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
     override val viewModel by lazy {
         ViewModelProvider(this, factory).get(MainViewModel::class.java)
     }
+
+    override val layoutId = R.layout.activity_main
 
     lateinit var mapView: MapView
 
@@ -58,11 +58,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
             })
 
             trashList.observe(this@MainActivity, {
-                addMarker(1)
+                addMarker(trashList.value!!, 1)
             })
 
             trashCanList.observe(this@MainActivity, {
-                addMarker(2)
+                addMarker(trashCanList.value!!, 2)
             })
         }
     }
@@ -99,49 +99,26 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
                 location.longitude
             ), true
         )
-
     }
 
-    private fun addMarker(num: Int) {
-        when (num) {
-            1 -> {
-                val list = viewModel.trashList.value!!
-
-                for (data in list) {
-                    val trashMarker = MapPOIItem().apply {
-                        itemName = data.area + data.address
-                        mapPoint = MapPoint.mapPointWithGeoCoord(
-                            data.latitude.toDouble(),
-                            data.longitude.toDouble()
-                        )
-                        markerType = MapPOIItem.MarkerType.CustomImage
-                        customImageResourceId = R.drawable.ic_trash
-                        isCustomImageAutoscale = false
-                        setCustomImageAnchor(0.5f, 1.0f)
-                    }
-
-                    mapView.addPOIItem(trashMarker)
-                }
+    private fun addMarker(list: List<TrashModel>, num: Int) {
+        for (data in list) {
+            val trashCanMarker = MapPOIItem().apply {
+                itemName = data.area + data.address
+                mapPoint = MapPoint.mapPointWithGeoCoord(
+                    data.latitude.toDouble(),
+                    data.longitude.toDouble()
+                )
+                markerType = MapPOIItem.MarkerType.CustomImage
+                isCustomImageAutoscale = false
+                setCustomImageAnchor(0.5f, 1.0f)
             }
-            2 -> {
-                val list = viewModel.trashCanList.value!!
-
-                for (data in list) {
-                    val trashCanMarker = MapPOIItem().apply {
-                        itemName = data.area + data.address
-                        mapPoint = MapPoint.mapPointWithGeoCoord(
-                            data.latitude.toDouble(),
-                            data.longitude.toDouble()
-                        )
-                        markerType = MapPOIItem.MarkerType.CustomImage
-                        customImageResourceId = R.drawable.ic_trash_can
-                        isCustomImageAutoscale = false
-                        setCustomImageAnchor(0.5f, 1.0f)
-                    }
-
-                    mapView.addPOIItem(trashCanMarker)
-                }
+            when (num) {
+                1 -> trashCanMarker.customImageResourceId = R.drawable.ic_trash
+                2 -> trashCanMarker.customImageResourceId = R.drawable.ic_trash_can
             }
+
+            mapView.addPOIItem(trashCanMarker)
         }
     }
 }

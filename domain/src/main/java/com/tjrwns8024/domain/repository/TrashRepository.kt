@@ -1,10 +1,9 @@
 package com.tjrwns8024.domain.repository
 
-import com.tjrwns8024.domain.entity.TrashCanList
 import com.tjrwns8024.domain.entity.TrashList
 import io.reactivex.Single
 
 interface TrashRepository {
     fun getTrashList(): Single<TrashList>
-    fun getTrashCanList(): Single<TrashCanList>
+    fun getTrashCanList(): Single<TrashList>
 }

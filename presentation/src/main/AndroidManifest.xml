@@ -16,9 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TTTAndroid"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.activity.PhotoActivity"></activity>
         <activity android:name=".ui.activity.ChartActivity" />
         <activity android:name=".ui.activity.RankActivity" />
-
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

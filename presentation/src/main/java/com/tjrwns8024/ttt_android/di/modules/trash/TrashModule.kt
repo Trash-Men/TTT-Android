@@ -7,7 +7,7 @@ import com.tjrwns8024.domain.repository.TrashRepository
 import com.tjrwns8024.data.repository.TrashRepositoryImpl
 import com.tjrwns8024.domain.usecase.GetTrashCanUseCase
 import com.tjrwns8024.domain.usecase.GetTrashUseCase
-import com.tjrwns8024.ttt_android.viewmodel.MainViewModelFactory
+import com.tjrwns8024.ttt_android.viewmodel.factory.MainViewModelFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

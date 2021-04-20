@@ -10,13 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.tjrwns8024.ttt_android.BR
 
-abstract class BaseActivity<T : ViewDataBinding>(
-    private val layoutId: Int
-) : AppCompatActivity() {
+abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     private var _binding: T? = null
     protected val binding get() = _binding!!
 
+    abstract val layoutId : Int
     abstract val viewModel: BaseViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.tjrwns8024.ttt_android.ui
+package com.tjrwns8024.ttt_android.ui.activity
 
 import android.Manifest
 import android.animation.ObjectAnimator
@@ -18,6 +18,7 @@ import com.tjrwns8024.ttt_android.viewmodel.MainViewModel
 import com.tjrwns8024.ttt_android.viewmodel.factory.MainViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.*
+import splitties.activities.start
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -44,11 +45,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         with(viewModel) {
             isFabOpen.observe(this@MainActivity, {
                 if (isFabOpen.value!!) {
-                    ObjectAnimator.ofFloat(binding.pictureFab, "translationY", 0f).apply { start() }
+                    ObjectAnimator.ofFloat(binding.photoFab, "translationY", 0f).apply { start() }
                     ObjectAnimator.ofFloat(binding.chartFab, "translationY", 0f).apply { start() }
                     ObjectAnimator.ofFloat(binding.rankFab, "translationY", 0f).apply { start() }
                 } else {
-                    ObjectAnimator.ofFloat(binding.pictureFab, "translationY", -250f)
+                    ObjectAnimator.ofFloat(binding.photoFab, "translationY", -250f)
                         .apply { start() }
                     ObjectAnimator.ofFloat(binding.chartFab, "translationY", -500f)
                         .apply { start() }
@@ -63,6 +64,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
             trashCanList.observe(this@MainActivity, {
                 addMarker(trashCanList.value!!, 2)
+            })
+
+            photoEvent.observe(this@MainActivity, {
+                it.getContentIfNotHandled()?.let {
+                    start<PhotoActivity>()
+                }
             })
         }
     }
@@ -104,10 +111,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private fun addMarker(list: List<TrashModel>, num: Int) {
         for (data in list) {
             val trashCanMarker = MapPOIItem().apply {
-                itemName = data.area + data.address
+                itemName = data.area
                 mapPoint = MapPoint.mapPointWithGeoCoord(
-                    data.latitude.toDouble(),
-                    data.longitude.toDouble()
+                    data.longitude.toDouble(),
+                    data.latitude.toDouble()
                 )
                 markerType = MapPOIItem.MarkerType.CustomImage
                 isCustomImageAutoscale = false

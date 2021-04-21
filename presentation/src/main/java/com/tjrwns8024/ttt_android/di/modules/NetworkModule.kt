@@ -40,6 +40,7 @@ object NetworkModule {
                 OkHttpClient.Builder()
                     .addInterceptor(authorizationInterceptor)
                     .addInterceptor(httpLoggingInterceptor)
+                    .retryOnConnectionFailure(true)
                     .build()
             )
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

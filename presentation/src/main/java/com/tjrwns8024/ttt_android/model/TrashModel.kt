@@ -7,7 +7,6 @@ data class TrashModel(
     val latitude: Float,
     val longitude: Float,
     val area: String,
-    val address: String,
     val createdAt: String
 )
 
@@ -17,6 +16,5 @@ fun Trash.toModel(): TrashModel =
         latitude,
         longitude,
         area,
-        address,
         createdAt
     )

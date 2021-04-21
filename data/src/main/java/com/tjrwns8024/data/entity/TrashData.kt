@@ -17,8 +17,6 @@ data class TrashData(
     val longitude: Float,
     @SerializedName("area")
     val area: String,
-    @SerializedName("address")
-    val address: String,
     @SerializedName("created_at")
     val createdAt: String
 )
@@ -34,6 +32,5 @@ fun TrashData.toEntity(): Trash =
         latitude,
         longitude,
         area,
-        address,
         createdAt
     )

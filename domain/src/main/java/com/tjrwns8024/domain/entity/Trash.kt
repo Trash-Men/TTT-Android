@@ -9,6 +9,5 @@ data class Trash(
     val latitude: Float,
     val longitude: Float,
     val area: String,
-    val address: String,
     val createdAt: String
 )

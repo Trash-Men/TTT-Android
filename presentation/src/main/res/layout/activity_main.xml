@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.MainActivity">
+        tools:context=".ui.activity.MainActivity">
 
         <RelativeLayout
             android:id="@+id/map_view"
@@ -51,10 +51,11 @@
             app:tint="@color/mainColor" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/pictureFab"
+            android:id="@+id/photoFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
+            android:onClick="@{()->vm.clickPhoto()}"
             android:src="@drawable/ic_picture"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="@+id/mainFab"
@@ -76,8 +77,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:backgroundTint="@color/mainColor"
-            android:src="@drawable/ic_add"
             android:onClick="@{()->vm.toggleFab()}"
+            android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/white" />

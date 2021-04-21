@@ -8,6 +8,7 @@ import com.tjrwns8024.domain.usecase.GetTrashCanUseCase
 import com.tjrwns8024.domain.usecase.GetTrashUseCase
 import com.tjrwns8024.ttt_android.model.TrashModel
 import com.tjrwns8024.ttt_android.model.toModel
+import com.tjrwns8024.ttt_android.util.Event
 import io.reactivex.observers.DisposableSingleObserver
 
 class MainViewModel(
@@ -19,6 +20,8 @@ class MainViewModel(
         getTrash()
         getTrashCan()
     }
+
+    val photoEvent = MutableLiveData<Event<Boolean>>()
 
     var trashList = MutableLiveData<List<TrashModel>>()
     var trashCanList = MutableLiveData<List<TrashModel>>()
@@ -33,7 +36,7 @@ class MainViewModel(
         trashUseCase.execute(Unit, object : DisposableSingleObserver<TrashList>() {
             override fun onSuccess(t: TrashList) {
                 trashList.value = t.trashes.map { it.toModel() }
-                Log.d("success",trashList.value.toString())
+                Log.d("success", trashList.value.toString())
             }
 
             override fun onError(e: Throwable) {
@@ -46,12 +49,16 @@ class MainViewModel(
         trashCanUseCase.execute(Unit, object : DisposableSingleObserver<TrashList>() {
             override fun onSuccess(t: TrashList) {
                 trashCanList.value = t.trashes.map { it.toModel() }
-                Log.d("success",trashCanList.value.toString())
+                Log.d("success", trashCanList.value.toString())
             }
 
             override fun onError(e: Throwable) {
                 Log.e("erroror", e.toString())
             }
         })
+    }
+
+    fun clickPhoto() {
+        photoEvent.value = Event(true)
     }
 }

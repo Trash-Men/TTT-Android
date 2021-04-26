@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/photo_nav_graph"
+    app:startDestination="@id/choicePhotoFragment">
+
+    <fragment
+        android:id="@+id/choicePhotoFragment"
+        android:name="com.tjrwns8024.ttt_android.ui.fragment.ChoicePhotoFragment"
+        android:label="ChoicePhotoFragment"
+        tools:layout="@layout/fragment_choice_photo">
+        <action
+            android:id="@+id/action_choicePhoto_to_sendPhoto"
+            app:destination="@id/sendPhotoFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/sendPhotoFragment"
+        android:name="com.tjrwns8024.ttt_android.ui.fragment.SendPhotoFragment"
+        android:label="fragment_send_photo"
+        tools:layout="@layout/fragment_send_photo" />
+
+</navigation>

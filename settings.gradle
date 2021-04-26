@@ -1,2 +1,5 @@
-include ':app'
+include ':data'
+include ':presentation'
+include ':domain'
+
 rootProject.name = "TTT-Android"

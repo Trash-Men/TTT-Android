@@ -86,3 +86,5 @@ lint/tmp/
 
 .idea
 .DS_Store
+
+data/src/main/java/com/tjrwns8024/data/remote/AuthorizationInterceptor.kt

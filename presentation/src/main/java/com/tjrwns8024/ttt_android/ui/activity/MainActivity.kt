@@ -113,8 +113,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             val trashCanMarker = MapPOIItem().apply {
                 itemName = data.area
                 mapPoint = MapPoint.mapPointWithGeoCoord(
-                    data.longitude.toDouble(),
-                    data.latitude.toDouble()
+                    data.latitude.toDouble(),
+                    data.longitude.toDouble()
                 )
                 markerType = MapPOIItem.MarkerType.CustomImage
                 isCustomImageAutoscale = false

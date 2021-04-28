@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/choicePhotoFragment"
-        android:name="com.tjrwns8024.ttt_android.ui.fragment.ChoicePhotoFragment"
+        android:name="com.tjrwns8024.ttt_android.ui.activity.ChoicePhotoFragment"
         android:label="ChoicePhotoFragment"
-        tools:layout="@layout/fragment_choice_photo">
+        tools:layout="@layout/activity_choice_photo">
         <action
             android:id="@+id/action_choicePhoto_to_sendPhoto"
             app:destination="@id/sendPhotoFragment"/>

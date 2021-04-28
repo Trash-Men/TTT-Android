@@ -9,7 +9,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:name=".di.TTTApplication"
@@ -21,10 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TTTAndroid"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.activity.PhotoActivity"/>
-        <activity android:name=".ui.activity.ChartActivity" />
-        <activity android:name=".ui.activity.RankActivity" />
-        <activity android:name=".ui.activity.MainActivity">
+        <activity android:name=".ui.ChoicePhotoActivity" />
+        <activity android:name=".ui.SendPhotoActivity" />
+        <activity android:name=".ui.ChartActivity" />
+        <activity android:name=".ui.RankActivity" />
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

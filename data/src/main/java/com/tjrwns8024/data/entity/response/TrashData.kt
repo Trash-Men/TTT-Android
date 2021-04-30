@@ -1,4 +1,4 @@
-package com.tjrwns8024.data.entity
+package com.tjrwns8024.data.entity.response
 
 import com.google.gson.annotations.SerializedName
 import com.tjrwns8024.domain.entity.Trash

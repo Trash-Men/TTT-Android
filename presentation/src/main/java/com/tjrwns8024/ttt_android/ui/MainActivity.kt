@@ -3,9 +3,12 @@ package com.tjrwns8024.ttt_android.ui
 import android.Manifest
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -14,12 +17,14 @@ import com.tjrwns8024.ttt_android.base.BaseActivity
 import com.tjrwns8024.ttt_android.databinding.ActivityMainBinding
 import com.tjrwns8024.ttt_android.model.TrashModel
 import com.tjrwns8024.ttt_android.util.CustomCalloutBalloonAdapter
+import com.tjrwns8024.ttt_android.util.EventObserver
 import com.tjrwns8024.ttt_android.util.ViewAnimation
 import com.tjrwns8024.ttt_android.viewmodel.MainViewModel
 import com.tjrwns8024.ttt_android.viewmodel.factory.MainViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.*
 import splitties.activities.start
+import splitties.toast.toast
 import javax.inject.Inject
 
 
@@ -36,13 +41,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override val layoutId = R.layout.activity_main
 
     lateinit var mapView: MapView
-    companion object{
+
+    companion object {
         val mapHash = HashMap<Int, TrashModel>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        checkPermission()
         drawMap()
     }
 
@@ -72,31 +79,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             })
 
             photoEvent.observe(this@MainActivity, {
-                it.getContentIfNotHandled()?.let {
+                Log.d("observe",it.peekContent().toString())
+                Log.d("observe",checkPhotoPermission().toString())
+                if (checkPhotoPermission()) {
                     start<ChoicePhotoActivity>()
+                } else {
+                    ActivityCompat.requestPermissions(
+                        this@MainActivity,
+                        arrayOf(
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ), 1
+                    )
                 }
             })
         }
     }
 
     private fun drawMap() {
-        //check permission
-        try {
-            if (ContextCompat.checkSelfPermission(
-                    applicationContext,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    101
-                )
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
         //mapView
         mapView = MapView(this)
         val mapViewContainer = binding.mapView
@@ -128,5 +128,39 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             mapView.addPOIItem(trashCanMarker)
             mapHash[trashCanMarker.tag] = data
         }
+    }
+
+    private fun checkPermission() {
+        try {
+            if (ContextCompat.checkSelfPermission(
+                    applicationContext,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ),
+                    1
+                )
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun checkPhotoPermission(): Boolean {
+        return (ContextCompat.checkSelfPermission(
+            applicationContext,
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(
+            applicationContext,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED)
     }
 }

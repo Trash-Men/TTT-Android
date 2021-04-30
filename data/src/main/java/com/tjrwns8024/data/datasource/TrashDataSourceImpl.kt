@@ -2,7 +2,7 @@ package com.tjrwns8024.data.datasource
 
 import com.tjrwns8024.data.base.getError
 import com.tjrwns8024.data.entity.TrashCanListData
-import com.tjrwns8024.data.entity.TrashListData
+import com.tjrwns8024.data.entity.response.TrashListData
 import com.tjrwns8024.data.remote.Api
 import io.reactivex.Single
 

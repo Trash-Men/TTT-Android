@@ -79,8 +79,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             })
 
             photoEvent.observe(this@MainActivity, {
-                Log.d("observe",it.peekContent().toString())
-                Log.d("observe",checkPhotoPermission().toString())
                 if (checkPhotoPermission()) {
                     start<ChoicePhotoActivity>()
                 } else {
@@ -88,10 +86,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                         this@MainActivity,
                         arrayOf(
                             Manifest.permission.CAMERA,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.ACCESS_FINE_LOCATION
                         ), 1
                     )
                 }
+            })
+
+            chartEvent.observe(this@MainActivity, {
+                start<ChartActivity>()
+            })
+            rankEvent.observe(this@MainActivity, {
+                start<RankActivity>()
             })
         }
     }

@@ -1,10 +1,12 @@
 package com.tjrwns8024.domain.repository
 
-import com.tjrwns8024.domain.entity.Photo
+import com.tjrwns8024.domain.entity.PhotoImage
+import com.tjrwns8024.domain.entity.PhotoInfo
 import com.tjrwns8024.domain.entity.PhotoPath
 import io.reactivex.Single
-import java.io.File
 
 interface PhotoRepository {
-    fun uploadPhoto(photo: Photo): Single<PhotoPath>
+    fun uploadPhoto(photoImage: PhotoImage): Single<PhotoPath>
+    fun postTrashInfo(photoInfo: PhotoInfo): Single<Unit>
+    fun postTrashCanInfo(photoInfo: PhotoInfo): Single<Unit>
 }

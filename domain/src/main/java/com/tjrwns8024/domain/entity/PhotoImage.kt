@@ -2,7 +2,7 @@ package com.tjrwns8024.domain.entity
 
 import java.io.File
 
-data class Photo(
+data class PhotoImage(
     val photo: File,
     val type: String
 )

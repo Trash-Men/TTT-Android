@@ -35,7 +35,7 @@ object NetworkModule {
         httpLoggingInterceptor: HttpLoggingInterceptor
     ): Api {
         return Retrofit.Builder()
-            .baseUrl("http://13.125.206.131:5000")
+            .baseUrl("http://dsm-rank.site/")
             .client(
                 OkHttpClient.Builder()
                     .addInterceptor(authorizationInterceptor)

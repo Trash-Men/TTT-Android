@@ -1,5 +1,6 @@
 package com.tjrwns8024.ttt_android.ui
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import com.tjrwns8024.ttt_android.R
 import com.tjrwns8024.ttt_android.base.BaseActivity
@@ -31,7 +32,9 @@ class ChoicePhotoActivity : BaseActivity<ActivityChoicePhotoBinding>() {
             })
 
             nextEvent.observe(this@ChoicePhotoActivity, EventObserver {
-                start<SendPhotoActivity>()
+                val intent = Intent(baseContext, SendPhotoActivity::class.java)
+                intent.putExtra("type", viewModel.type.value.toString())
+                startActivity(intent)
             })
         }
     }

@@ -9,9 +9,7 @@ import com.tjrwns8024.data.repository.PhotoRepositoryImpl
 import com.tjrwns8024.data.repository.TrashRepositoryImpl
 import com.tjrwns8024.domain.repository.PhotoRepository
 import com.tjrwns8024.domain.repository.TrashRepository
-import com.tjrwns8024.domain.usecase.GetTrashCanUseCase
-import com.tjrwns8024.domain.usecase.GetTrashUseCase
-import com.tjrwns8024.domain.usecase.UploadPhotoUseCase
+import com.tjrwns8024.domain.usecase.*
 import com.tjrwns8024.ttt_android.viewmodel.factory.MainViewModelFactory
 import com.tjrwns8024.ttt_android.viewmodel.factory.PhotoViewModelFactory
 import dagger.Module
@@ -19,6 +17,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -26,8 +25,11 @@ class PhotoModule {
 
     @Provides
     fun providePhotoViewModelFactory(
-        uploadPhotoUseCase: UploadPhotoUseCase
-    ): PhotoViewModelFactory = PhotoViewModelFactory(uploadPhotoUseCase)
+        uploadPhotoUseCase: UploadPhotoUseCase,
+        postTrashInfoUseCase: PostTrashInfoUseCase,
+        postTrashCanInfoUseCase: PostTrashCanInfoUseCase
+    ): PhotoViewModelFactory =
+        PhotoViewModelFactory(uploadPhotoUseCase, postTrashInfoUseCase, postTrashCanInfoUseCase)
 
     @Provides
     fun providePhotoDataSource(
@@ -45,4 +47,15 @@ class PhotoModule {
         compositeDisposable: CompositeDisposable
     ) = UploadPhotoUseCase(photoRepository, compositeDisposable)
 
+    @Provides
+    fun postTrashInfoUseCase(
+        photoRepository: PhotoRepository,
+        compositeDisposable: CompositeDisposable
+    ) = PostTrashInfoUseCase(photoRepository, compositeDisposable)
+
+    @Provides
+    fun postTrashCanInfoUseCase(
+        photoRepository: PhotoRepository,
+        compositeDisposable: CompositeDisposable
+    ) = PostTrashCanInfoUseCase(photoRepository, compositeDisposable)
 }

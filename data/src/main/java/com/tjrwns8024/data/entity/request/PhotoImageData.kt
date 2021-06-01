@@ -1,15 +1,15 @@
 package com.tjrwns8024.data.entity.request
 
-import com.tjrwns8024.domain.entity.Photo
+import com.tjrwns8024.domain.entity.PhotoImage
 import java.io.File
 
-data class PhotoData(
+data class PhotoImageData(
     val photo: File,
     val type: String
 )
 
-fun Photo.toEntity(): PhotoData =
-    PhotoData(
+fun PhotoImage.toEntity(): PhotoImageData =
+    PhotoImageData(
         photo,
         type
     )

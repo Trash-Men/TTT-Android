@@ -1,5 +1,6 @@
 package com.tjrwns8024.ttt_android.ui
 
+import android.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.components.AxisBase
@@ -8,6 +9,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.utils.ColorTemplate
 import com.tjrwns8024.ttt_android.R
 import com.tjrwns8024.ttt_android.base.BaseActivity
 import com.tjrwns8024.ttt_android.databinding.ActivityChartBinding
@@ -15,6 +17,7 @@ import com.tjrwns8024.ttt_android.viewmodel.ChartViewModel
 import com.tjrwns8024.ttt_android.viewmodel.factory.ChartViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import splitties.resources.color
+import splitties.resources.colorSL
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -58,6 +61,8 @@ class ChartActivity : BaseActivity<ActivityChartBinding>() {
         }
 
         val barDataSet = BarDataSet(trashList, "쓰레기 차트")
+        barDataSet.color = Color.parseColor("#FF4B40")
+
 
         val barData = BarData(barDataSet)
         barData.barWidth = 0.5f
@@ -75,7 +80,7 @@ class ChartActivity : BaseActivity<ActivityChartBinding>() {
             granularity = 1f // 1 단위만큼 간격 두기
             setDrawAxisLine(true) // 축 그림
             setDrawGridLines(false) // 격자
-            textColor = ContextCompat.getColor(applicationContext, R.color.white) //라벨 색상
+            textColor = ContextCompat.getColor(applicationContext, R.color.mainColor) //라벨 색상
             valueFormatter = TrashFormatter() // 축 라벨 값 바꿔주기 위함
             textSize = 10f // 텍스트 크기
         }
@@ -94,15 +99,13 @@ class ChartActivity : BaseActivity<ActivityChartBinding>() {
         }
 
         val barDataSet = BarDataSet(trashCanList, "쓰레기통 차트")
-        barDataSet.color = R.color.mainColor
+        barDataSet.color = Color.parseColor("#FF4B40")
 
         val barData = BarData(barDataSet)
         barData.barWidth = 0.5f
 
         val barChart = binding.trashCanBarChart
         barChart.data = barData
-        barChart.axisLeft.axisLineColor = R.color.mainColor
-        barChart.axisRight.axisLineColor = R.color.mainColor
 
         barChart.animateXY(1000, 1000)
         barChart.invalidate()

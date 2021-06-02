@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TTTAndroid"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.ResultPhotoActivity"></activity>
+        <activity android:name=".ui.ResultPhotoActivity"/>
         <activity android:name=".ui.ChoicePhotoActivity" />
         <activity android:name=".ui.SendPhotoActivity" />
         <activity android:name=".ui.ChartActivity" />

@@ -50,6 +50,7 @@
 
             <RadioButton
                 android:id="@+id/trash_radio_btn"
+                android:buttonTint="@color/mainColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
@@ -58,6 +59,7 @@
 
             <RadioButton
                 android:id="@+id/trash_can_radio_btn"
+                android:buttonTint="@color/mainColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{()->vm.onSplitTypeChanged(2)}"
